@@ -1,0 +1,44 @@
+---
+title: "Data prep (from raw)"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(patchwork)
+```
+
+Data are from: Lightfoot, D. and W.G. Whitford. 2020. Lizard pitfall trap data from 11 NPP study locations at the Jornada Basin LTER site, 1989-2006 ver 37. Environmental Data Initiative. https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f
+
+```{r}
+# Read in lizard data
+jornada_lizards <- read_csv(here("data_raw","jornada_lizards.csv")) %>% 
+  clean_names()
+
+# Clean up lizard codes
+lizard_codes <- read_delim(here("data_raw", "lizardcodelist.txt"), delim = " ", skip = 1) %>% 
+  clean_names() %>% 
+  slice(-1) %>% 
+  unite("scientific_name", c(scientific, name), sep = " ") %>% 
+  unite("common_name", c(common, name_1), sep = " ") %>% 
+  mutate(common_name = str_squish(common_name),
+         scientific_name = str_squish(scientific_name)) %>% 
+  mutate(common_name = case_when(
+    common_name == "NA NA" ~ "unknown",
+    TRUE ~ common_name
+  )) %>% 
+  rename(spp = code)
+
+# Join lizard names to dataset
+lizards <- jornada_lizards %>% 
+  full_join(lizard_codes) %>% 
+  mutate(across(where(is.character), tolower)) %>% 
+  relocate(c(scientific_name, common_name), .after = date)
+
+# Write to a csv in `data_tidy` folder
+write_csv(lizards, here("data_tidy", "lizards.csv"))
+```
+
