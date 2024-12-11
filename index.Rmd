@@ -1,6 +1,6 @@
 ---
-title: "Advanced Data Visualization in `ggplot2`"
-subtitle: "Rice University Data Visualization Symposium (2021)"
+title: "Visualisasi Data dengan `ggplot2`"
+subtitle: "Institut Teknologi Statistika dan Bisnis Muhammadiyah Semarang"
 output: 
   html_document:
     css: css/style.css
@@ -11,61 +11,72 @@ output:
   
 ---
 
-**Allison Horst, PhD**
+**Deden Istiawan**
 
-Assistant Teaching Professor, Bren School, UC Santa Barbara
 
-- ahorst@ucsb.edu
-- [\@allison_horst](https://twitter.com/allison_horst)
+- deden.istiawan@itesa.ac.id
+- [\@dedenistiawan](https://twitter.com/dedenistiawan)
 
-```{r, echo=FALSE, out.width="70%", fig.align = "left", fig.cap = "Illustration by Allison Horst"}
+```{r, echo=FALSE, out.width="70%", fig.align = "left", fig.cap = "Illustration ggplot2"}
 knitr::include_graphics("img/ggplot_masterpiece.jpg") 
 ```
 
-# Welcome
+# Pengantar
 
-Welcome to the Advanced Data Visualization with `ggplot2` workshop! 
+Selamat datang di mata kuliah Visualisasi Data dengan `ggplot2`!
 
-In this workshop, we’ll cover concepts and skills to create effective, elegant data visualizations with `ggplot2` in R. We will start by reviewing, then building on, ggplot basics to make highly customized figures (including with scales, guides, themes, direct labeling and highlighting) while reinforcing data visualization principles by carefully considering why we update (or don’t update) each graph component. Next, we will learn how to make several elegant and modern (but less commonly seen) graph types before putting them together into a compound figure using the `patchwork` package. To wrap up, we’ll construct a beautiful map in `ggplot` to reinforce how tools and concepts we’ve learned are transferable across different data and visualization types. 
+Dalam mata kuliah ini, kita akan membahas konsep dan keterampilan untuk membuat visualisasi data yang efektif menggunakan `ggplot2` di R. Kita akan memulai dengan mereview dasar-dasar ggplot, kemudian memperdalam kemampuan dengan membuat grafik (termasuk penyesuaian skala, tema, pelabelan langsung, dsb) sambil memperkuat prinsip-prinsip visualisasi data dengan mempertimbangkan dengan cermat alasan kita mengubah (atau tidak mengubah) setiap komponen grafik. Selanjutnya, kita akan belajar membuat beberapa jenis grafik modern dan menarik yang jarang digunakan, sebelum menggabungkannya menjadi gambar gabungan menggunakan paket `patchwork`. Sebagai penutup, kita akan membangun sebuah peta dengan menggunakan ggplot, untuk memperkuat pemahaman bahwa alat dan konsep yang dipelajari dapat diterapkan pada berbagai jenis data dan visualisasi.
 
-Participants should be able to:
+Mahasiswa harus dapat:
 
-- Install and attach R packages
-- Make basic `ggplot2` graphs in R
-- Work comfortably in either R scripts of R Markdown (Allison will be in R Markdown)
+- Menginstal dan memasang paket R
+- Membuat grafik `ggplot2` dasar dalam R
+- Bekerja dengan nyaman dalam skrip R atau R Markdown
 
-## Workshop outline 
+## Outline Dataviz
 
--  Conceptual hierarchy of data viz
-- `ggplot2` basics review
-    - Aesthetic mapping
-    - Themes
-    - Labels
-    - Facets (& facet grids vs facet wraps)
-    - Getting things in order (e.g. fct_reorder)
-- Advanced customization in `ggplot2`
-    - `scales` for thoughtful breaks and labels
-    - ...and color schemes (+ `paletteer`!)
-    - In the weeds of themes (gridlines, panel colors, margins, etc.)
-    - Direct annotation (as an alternative to legends)
-    - Repulsive labels (e.g. `ggrepel`)
-    - Highlighting for clarity (e.g. with `gghighlight`)
-- Compound figures with `patchwork`
-- A few new graph types to consider
-    - Marginal plot
-    - Beeswarm plots with `ggbeeswarm`
-    - Heatmaps with `geom_tile()`
-    - A map! in `ggplot2`
-- Export & save your graphs
-- Keep learning
+Berikut adalah beberapa hal yang akan dipelajari pada mata kuliah visualisasi data dengan `ggplot2` di R:  
 
+Mata kuliah ini dirancang untuk memberikan pemahaman mendalam tentang hierarki konseptual dalam visualisasi data serta keterampilan praktis dalam menggunakan `ggplot2` di R. Topik-topik yang akan dibahas meliputi:  
 
+1. Dasar-dasar `ggplot2` 
+   - Pemetaan estetika (aesthetic mapping)  
+   - Tema dan penyesuaiannya  
+   - Penambahan label  
+   - Fitur facet (termasuk perbandingan antara facet grid dan facet wrap)  
+   - Mengatur urutan elemen data (misalnya, dengan `fct_reorder`)  
 
-# Citations and data
+2. Kustomisasi Lanjutan di `ggplot2`  
+   - Menggunakan `scales` untuk menentukan jeda dan label yang bermakna  
+   - Skema warna yang menarik (dengan tambahan dukungan dari `paletteer`)  
+   - Detail tema: garis kisi, warna panel, margin, dan lainnya  
+   - Anotasi langsung sebagai alternatif legenda  
+   - Label yang tidak saling bertumpuk dengan `ggrepel`  
+   - Penyorotan elemen data untuk meningkatkan kejelasan menggunakan `gghighlight`  
+
+3. Membuat gambar Komposit dengan `patchwork`  
+   Memanfaatkan paket `patchwork` untuk menggabungkan berbagai grafik menjadi satu tata
+   letak yang menarik.  
+
+4. Jenis Grafik Baru yang Layak Dicoba 
+   - Plot marginal untuk menunjukkan distribusi tambahan  
+   - Beeswarm plots dengan `ggbeeswarm`  
+   - Heatmap dengan `geom_tile()`  
+   - Membuat peta yang menarik menggunakan `ggplot2`  
+
+5. Ekspor dan Penyimpanan Grafik
+   Teknik dan praktik terbaik untuk menyimpan hasil visualisasi Anda dengan kualitas
+   tinggi.  
+
+Mata kuliah ini akan membantu mahasiswa memahami prinsip-prinsip visualisasi data yang baik sekaligus menguasai alat-alat yang diperlukan untuk membuat grafik yang elegan dan bermakna.  
+
+# Referensi dan data
 
 ## R packages
 
-Thank you to developers, sharers, teachers, and the entire R community for building things and creating resources to help us all learn. I'd especially like to thank developers & maintainers for the following packages: 
+Terima kasih yang sebesar-besarnya kepada para pengembang, kontributor, pengajar, dan seluruh komunitas R atas kontribusi luar biasa dalam membangun alat, menciptakan sumber daya, dan menciptakan lingkungan yang mendukung untuk belajar. Upaya kolektif Anda memungkinkan kami untuk terus mengeksplorasi dan berkembang dalam bidang visualisasi data.
+
+Ucapan terima kasih khusus ditujukan kepada para pengembang dan pemelihara paket R berikut yang sangat penting dalam perjalanan pembelajaran ini:
 
 - `tidyverse`: Wickham et al., (2019). Welcome to the tidyverse. Journal of
   Open Source Software, 4(43), 1686,
@@ -89,57 +100,51 @@ Thank you to developers, sharers, teachers, and the entire R community for build
 - `janitor`:Sam Firke (2021). janitor: Simple Tools for Examining and Cleaning Dirty Data. R
   package version 2.1.0. https://github.com/sfirke/janitor
   
-## Lizard size measurement data
 
-Our data are a curated subset from [Jornada Basin Long Term Ecological Research site](https://lter.jornada.nmsu.edu/) in New Mexico, part of the US Long Term Ecological Research (LTER) network: 
+## Data Praktikum
 
-- Lightfoot, D. and W.G. Whitford. 2020. Lizard pitfall trap data from 11 NPP study locations at the Jornada Basin LTER site, 1989-2006 ver 37. Environmental Data Initiative. https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f
+Data yang digunakan dari [Jornada Basin Long Term Ecological Research site](https://lter.jornada.nmsu.edu/) di New Mexico, bagian dari jaringan US Long Term Ecological Research (LTER):  
 
-From the data package: "This data package contains data on lizards sampled by pitfall traps located at 11 consumer plots at Jornada Basin LTER site from 1989-2006. The objective of this study is to observe how shifts in vegetation resulting from desertification processes in the Chihuahaun desert have changed the spatial and temporal availability of resources for consumers. Desertification changes in the Jornada Basin include changes from grass to shrub dominated communities and major soil changes. If grassland systems respond to rainfall without significant lags, but shrub systems do not, then consumer species should reflect these differences. In addition, shifts from grassland to shrubland results in greater structural heterogeneity of the habitats. We hypothesized that consumer populations, diversity, and densities of some consumers will be higher in grasslands than in shrublands and will be related to the NPP of the sites. Lizards were captured in pitfall traps at the 11 LTER II/III consumer plots (a subset of NPP plots) quarterly for 2 weeks per quarter. Variables measured include species, sex, recapture status, snout-vent length, total length, weight, and whether tail is broken or whole. This study is complete." 
+- Lightfoot, D. dan W.G. Whitford. 2020. Data jebakan kadal di 11 lokasi studi NPP di situs Jornada Basin LTER, 1989-2006 versi 37. Environmental Data Initiative. https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f  
 
-There are 16 total variables in the `lizards.csv` data we'll read in. The ones we'll use in this workshop are: 
+Dari paket data tersebut:  
+"Paket data ini mencakup data tentang kadal yang diambil dari jebakan di 11 plot konsumen di situs Jornada Basin LTER dari tahun 1989-2006. Tujuan penelitian ini adalah untuk mengamati bagaimana pergeseran vegetasi akibat proses desertifikasi di Gurun Chihuahuan telah mengubah ketersediaan sumber daya bagi konsumen secara spasial dan temporal. Perubahan desertifikasi di Jornada Basin meliputi peralihan dari padang rumput ke komunitas yang didominasi oleh semak dan perubahan besar pada tanah. Jika sistem padang rumput merespons hujan tanpa penundaan yang signifikan, sementara sistem semak tidak, maka spesies konsumen seharusnya mencerminkan perbedaan ini. Selain itu, pergeseran dari padang rumput ke semak menyebabkan heterogenitas struktural yang lebih besar pada habitat. Kami berhipotesis bahwa populasi, keanekaragaman, dan kepadatan beberapa konsumen akan lebih tinggi di padang rumput dibandingkan di semak belukar, serta berkorelasi dengan NPP (Net Primary Productivity) dari lokasi penelitian. Kadal ditangkap menggunakan jebakan di 11 plot konsumen LTER II/III (subset dari plot NPP) setiap tiga bulan selama 2 minggu setiap kuartal. Variabel yang diukur meliputi spesies, jenis kelamin, status penangkapan ulang, panjang moncong-ventral, panjang total, berat badan, dan kondisi ekor (patah atau utuh). Penelitian ini telah selesai."  
 
-- `date`: data collection date
-- `scientific_name`: lizard scientific name
-- `common_name`: lizard common name
-- `site`: research site code
-- `sex`: lizard sex (m = male; f = female; j = juvenile)
-- `sv_length`: snout-vent length (millimeters)
-- `total_length`: body length (millimeters)
-- `toe_num`: toe mark number
-- `weight`: body weight (grams)
-- `tail`: tail condition (b = broken; w = whole)
+Terdapat total 16 variabel dalam data `lizards.csv` yang akan kita baca. Variabel-variabel yang akan digunakan dalam workshop ini adalah:  
 
-## Jornada vegetation spatial data
+- **`date`**: tanggal pengumpulan data  
+- **`scientific_name`**: nama ilmiah kadal  
+- **`common_name`**: nama umum kadal  
+- **`site`**: kode lokasi penelitian  
+- **`sex`**: jenis kelamin kadal (`m` = jantan; `f` = betina; `j` = juvenil)  
+- **`sv_length`**: panjang moncong ke ventral (dalam milimeter)  
+- **`total_length`**: panjang tubuh (dalam milimeter)  
+- **`toe_num`**: nomor penanda pada jari kaki  
+- **`weight`**: berat tubuh (dalam gram)  
+- **`tail`**: kondisi ekor (`b` = patah; `w` = utuh)  
 
-From [Jornada Basin LTER Spatial Data](https://lter.jornada.nmsu.edu/spatial-data/): Dominant Vegetation of the JER and CDRRC in 1998  (Download KMZ 3972 KB) Dominant and subdominant vegetation on the Jornada Experimental Range and Chihuahuan Desert Rangeland Research Center in 1998. Published in Gibbens, R. P., McNeely, R. P., Havstad, K. M., Beck, R. F., & Nolen, B. (2005). Vegetation changes in the Jornada Basin from 1858 to 1998. Journal of Arid Environments, 61(4), 651-668.  
+## Data Spasial Vegetasi Jornada  
 
-# Set-up
+Data ini berasal dari [Jornada Basin LTER Spatial Data](https://lter.jornada.nmsu.edu/spatial-data/): **Vegetasi Dominan di JER dan CDRRC tahun 1998**. Data ini memuat informasi tentang vegetasi dominan dan subdominannya di **Jornada Experimental Range (JER)** dan **Chihuahuan Desert Rangeland Research Center (CDRRC)** pada tahun 1998.  
 
-## Get workshop materials
+Data ini diterbitkan dalam:  
+Gibbens, R. P., McNeely, R. P., Havstad, K. M., Beck, R. F., & Nolen, B. (2005). Vegetation changes in the Jornada Basin from 1858 to 1998. *Journal of Arid Environments, 61*(4), 651-668.  
 
-You can get the workshop materials in two ways:
+## Membuat Dokumen R Markdown Baru atau Skrip R  
 
-1. Clone the workshop repo from GitHub to work locally
-2. Create an RStudio Cloud account, and click [HERE](https://rstudio.cloud/project/2181259) to get to the project. Make sure you click on 'Make permanent copy' so your updates & notes will be stored.
+Saya akan menggunakan **R Markdown** selama perkuliahan, tetapi Anda dapat mengikuti workshop ini baik dengan **file .Rmd** maupun **skrip R (.R)**.  
 
-## Create a new R Markdown document or R script
-
-Allison will be working in R Markdown, but you can follow along in either an .Rmd or R script. 
-
-## Attach R packages
+## Install R packages
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ```{r}
-# General use packages:
 library(tidyverse)
 library(here)
 library(janitor)
 
-# Specifically for plots:
 library(patchwork)
 library(ggrepel)
 library(gghighlight)
@@ -147,15 +152,14 @@ library(paletteer)
 library(ggExtra)
 library(ggbeeswarm)
 
-# Spatial data simplified:
+# Spatial data
 library(sf)
 
-# And for another dataset we'll explore:
 library(gapminder)
 
 ```
 
-## Read in the lizard data
+## Read lizard data
 
 ```{r}
 lizards <- read_csv(here("data_tidy", "lizards.csv"))
