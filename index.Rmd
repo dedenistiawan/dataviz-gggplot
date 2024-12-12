@@ -11,19 +11,26 @@ output:
   
 ---
 
+```{=html}
+<style>
+body{
+text-align: justify}
+</style>
+```
+
 **Deden Istiawan**
 
 
 - deden.istiawan@itesa.ac.id
 - [\@dedenistiawan](https://twitter.com/dedenistiawan)
 
-```{r, echo=FALSE, out.width="70%", fig.align = "left", fig.cap = "Illustration ggplot2"}
+```{r, echo=FALSE, out.width="70%", fig.align = "left", fig.cap = "Ilustrasi ggplot2"}
 knitr::include_graphics("img/ggplot_masterpiece.jpg") 
 ```
 
 # Pengantar
 
-Selamat datang di mata kuliah Visualisasi Data dengan `ggplot2`!
+Selamat datang di mata kuliah Visualisasi Data dengan `ggplot2`
 
 Dalam mata kuliah ini, kita akan membahas konsep dan keterampilan untuk membuat visualisasi data yang efektif menggunakan `ggplot2` di R. Kita akan memulai dengan mereview dasar-dasar ggplot, kemudian memperdalam kemampuan dengan membuat grafik (termasuk penyesuaian skala, tema, pelabelan langsung, dsb) sambil memperkuat prinsip-prinsip visualisasi data dengan mempertimbangkan dengan cermat alasan kita mengubah (atau tidak mengubah) setiap komponen grafik. Selanjutnya, kita akan belajar membuat beberapa jenis grafik modern dan menarik yang jarang digunakan, sebelum menggabungkannya menjadi gambar gabungan menggunakan paket `patchwork`. Sebagai penutup, kita akan membangun sebuah peta dengan menggunakan ggplot, untuk memperkuat pemahaman bahwa alat dan konsep yang dipelajari dapat diterapkan pada berbagai jenis data dan visualisasi.
 
@@ -166,78 +173,181 @@ lizards <- read_csv(here("data_tidy", "lizards.csv"))
 ```
 
 
-# `ggplot2` Basics Review
+# Dasar-Dasar `ggplot2`
 
-First, we'll cover some `ggplot2` basics to create the foundation that we'll make our great customized data visualization on. 
+`ggplot2` adalah library visualisasi data populer di R, berdasarkan Grammar of Graphics. Library ini menyediakan cara yang kuat dan fleksibel untuk membuat berbagai jenis plot.
 
-## The essentials
+Ketika kita mulai membuat grafik dengan `ggplot2`, kita memerlukan tiga blok bangunan dasar:
 
-When we start creating a `ggplot` graph, we need three basic building blocks:
+- **`Menggunakan `ggplot2`**: Kita harus memulai dengan memanggil fungsi ggplot() untuk membuat objek ggplot baru.
+- **`Data yang digunakan`**: Kita harus menentukan data yang ingin kita gunakan dalam grafik kita. Data ini biasanya dalam bentuk data frame.
+- **`Jenis grafik`**: Kita harus menentukan jenis grafik yang ingin kita buat, seperti plot titik, plot garis, plot batang, atau histogram.
 
-1. We're using `ggplot`
-2. What data we want to use in our graph 
-3. What type of graph we're creating
+## Komponen Dasar
 
-For example: 
+Plot `ggplot2` terdiri dari komponen-komponen dasar berikut:
 
-```{r, eval = FALSE}
-# ggplot essential pieces, 3 ways (that do the same thing):
+- **`Data`**: Data yang akan diplot, biasanya dalam bentuk data frame.
+- **`Aesthetics`**: Properti visual plot, seperti warna, bentuk, dan ukuran.
+- **`Geoms`**: Objek geometris yang membentuk plot, seperti titik, garis, dan batang.
+- **`Scales`**: Skala yang digunakan untuk memetakan data ke aesthetics.
+- **`Facets`**: Cara untuk membagi data menjadi beberapa plot.
 
-# Like this: 
-ggplot(data = lizards, aes(x = total_length, y = weight)) + # That's 1 & 2
-  geom_point() # That's 3
+## Contoh Code
+Berikut adalah contoh membuat plot titik sederhana menggunakan `ggplot2`:
 
-# Or, alternatively:
+```{r}
+# Muat library ggplot2
+library(ggplot2)
+
+# Buat data frame contoh
+data <- data.frame(x = rnorm(100), y = rnorm(100))
+
+# Buat plot titik
+ggplot(data, aes(x = x, y = y)) +
+  geom_point()
+```
+
+## Custom Plot
+Anda dapat mengkustomisasi plot dengan menambahkan lapisan tambahan, seperti:
+
+- **`labs()`**: Menambahkan label ke plot.
+- **`theme()`**: Mengubah tampilan keseluruhan plot.
+- **`scale_color_manual()`**: Mengatur skala warna secara manual.
+
+Berikut adalah contoh mengkustomisasi plot:
+
+```{r}
+# Buat plot titik dengan label dan tema kustom
+ggplot(data, aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Plot Titik", x = "Sumbu X", y = "Sumbu Y") +
+  theme_classic()
+```
+
+## Faceting
+
+Faceting memungkinkan Anda untuk membagi data menjadi beberapa plot berdasarkan variabel kategorik. Berikut adalah contoh faceting:
+
+```{r}
+# Buat data frame contoh dengan variabel kategorik
+data <- data.frame(x = rnorm(100), y = rnorm(100), grup = sample(c("A", "B"), 100, replace = TRUE))
+
+# Buat plot titik dengan faceting
+ggplot(data, aes(x = x, y = y)) +
+  geom_point() +
+  facet_wrap(~ grup)
+```
+
+## Read lizard data
+Berikut ini merupakan contoh penggunaan library `ggplot2` dengan menggunakan data `lizards.csv`.
+
+```{r}
+lizards <- read_csv(here("data_tidy", "lizards.csv"))
+```
+
+## Tiga Cara untuk Membuat Grafik dengan `ggplot2`
+
+Kita dapat membuat grafik dengan `ggplot2` menggunakan tiga cara yang berbeda, namun memiliki hasil yang sama. Berikut adalah contoh-contoh tersebut:
+
+Cara 1:
+Dalam cara ini, kita menentukan data dan aesthetics (aes) langsung dalam fungsi `ggplot()`, kemudian menambahkan geom (dalam hal ini, `geom_point()`).
+
+```{r}
+# cara 1
+ggplot(data = lizards, aes(x = total_length, y = weight)) +
+  geom_point()
+```
+
+Cara 2:
+Dalam cara ini, kita menentukan data dalam fungsi `ggplot()`, kemudian menambahkan geom dan aesthetics dalam fungsi `geom_point()`.
+
+```{r}
 ggplot(data = lizards) +
   geom_point(aes(x = total_length, y = weight))
+```
 
-# Or another way:
+cara 3:
+Dalam cara ini, kita tidak menentukan data dalam fungsi `ggplot()`, melainkan menentukannya dalam fungsi `geom_point()` bersama dengan aesthetics.
+
+```{r}
 ggplot() +
   geom_point(data = lizards, aes(x = total_length, y = weight))
 ```
-Which all produce the same thing: 
 
-```{r, echo = FALSE}
-ggplot() +
-  geom_point(data = lizards, aes(x = total_length, y = weight))
-```
+Ketiga cara di atas memiliki hasil yang sama, yaitu membuat grafik titik dengan data `lizards` dan menggunakan `total_length` sebagai sumbu x dan `weight` sebagai sumbu y. Namun, perlu diingat bahwa cara pertama adalah cara yang paling umum digunakan dan direkomendasikan.
 
-Which makes changing graph types straightforward by updating the `geom_`:
+## Mengubah Jenis Grafik dengan Mudah
+Dengan menggunakan salah satu dari tiga cara yang disebutkan sebelumnya, kita dapat dengan mudah mengubah jenis grafik hanya dengan mengupdate `geom_`. Berikut adalah contoh:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
-  geom_line() # Bad idea, just demonstrating a geom switch.
+  geom_line() # sekedar contoh mengubah jenis grafik
 ```
 
-Keep in mind that some graph types only require one variable - for example, `geom_histogram`:
+**Grafik yang Hanya Memerlukan Satu Variabel**
+Beberapa jenis grafik hanya memerlukan satu variabel, seperti `geom_histogram`. Berikut adalah contoh:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length)) +
   geom_histogram()
 ```
 
-And remember to carefully consider the *type* of data you're trying to visualize, which will help to direct the graph type. For example, a jitterplot usually has one categorical variable and one continuous variable: 
+## Memilih Grafik Berdasarkan Jenis Data
+
+Saat memilih jenis grafik, penting untuk mempertimbangkan jenis data yang akan divisualisasikan. Berikut adalah beberapa contoh:
+
+**Data Kategorik dan Kontinu:** Jitterplot biasanya digunakan untuk memvisualisasikan data dengan satu variabel kategorik dan satu variabel kontinu.
 
 ```{r}
-ggplot(data = lizards, aes(y = common_name, x = weight)) +
+ggplot(data = lizards, aes(y = common_name, x = total_length)) +
   geom_jitter()
 ```
 
-**Not sure which type of graph is appropriate for your data?** My favorite resource is Yan Holtz' [From Data to Viz](https://www.data-to-viz.com/) - check it out, it is fun and amazing, and links to code examples from the [R Graph Gallery](https://www.r-graph-gallery.com/).
+Dalam contoh di atas, `common_name` adalah variabel kategorik dan `total_length` adalah variabel kontinu.
+
+**Data Kontinu:** Histogram dan grafik densitas biasanya digunakan untuk memvisualisasikan data dengan satu variabel kontinu.
+
+```{r}
+ggplot(data = lizards, aes(x = total_length)) +
+  geom_histogram()
+```
+
+Dalam contoh di atas, `total_length` adalah variabel kontinu.
+
+**Data Kategorik:** Grafik batang biasanya digunakan untuk memvisualisasikan data dengan satu variabel kategorik.
+
+```{r}
+ggplot(data = lizards, aes(y = common_name)) +
+  geom_bar()
+```
+
+Dalam contoh di atas, jenis_lizard adalah variabel kategorik.
+
+**Data Kontinu dengan Waktu:** Grafik garis biasanya digunakan untuk memvisualisasikan data dengan satu variabel kontinu yang terkait dengan waktu.
+
+```{r}
+ggplot(data = lizards, aes(x = date, y = total_length)) +
+  geom_line()
+```
+
+Dalam contoh di atas, `date` adalah variabel kontinu yang terkait dengan waktu dan `total_length` adalah variabel kontinu.
+
+**Tidak yakin jenis grafik yang tepat untuk data Anda?** Referensi favorit saya adalah Yan Holtz' [From Data to Viz](https://www.data-to-viz.com/) dan contoh kode dari [R Graph Gallery](https://www.r-graph-gallery.com/).
 
 ## Aesthetic mapping
 
-### Updating based on a constant? NO `aes()`!
-To change aesthetics of a graph based on a constant (e.g. "Make all the points BLUE"), we can add the information directly to the relevant `geom_` layer. Some things to keep in mind: 
+### Mengupdate Berdasarkan Konstanta? Tidak Perlu `aes()`!
+Untuk mengubah estetika grafik berdasarkan konstanta (misalnya, "Buat semua titik berwarna BIRU"), kita dapat menambahkan informasi langsung ke lapisan `geom_` yang relevan. Berikut beberapa hal yang perlu diingat: 
 
-- `fill`: updates fill colors (e.g. column, density, violin, & boxplot interior fill color)
-- `color`: updates point & border line colors (generally)
-- `shape`: update point style
-- `alpha`: update transparency (0 = transparent, 1 = opaque)
-- `size`: point size or line width
-- `linetype`: update the line type (e.g. "dotted", "dashed", "dotdash", etc.)
+- `fill`: mengupdate warna isi (misalnya, isi kolom, densitas, biola, dan kotak plot)
+- `color`: mengupdate warna titik dan garis batas (umumnya)
+- `shape`: mengupdate gaya titik
+- `alpha`: mengupdate transparansi  (0 = transparent, 1 = opaque)
+- `size`: ukuran titik atau lebar garis
+- `linetype`: mengupdate jenis garis (misalnya, "titik-titik", "garis putus-putus", "titik-garis", dll.)
 
-If you are updating these by referring to a constant value, they **should not be within an `aes()`**. 
+Jika Anda mengupdate nilai-nilai ini dengan merujuk pada nilai konstanta, maka **idak perlu menggunakan `aes()`**. 
 
 For example, let's make some nightmares: 
 
@@ -249,7 +359,14 @@ ggplot(data = lizards, aes(x = weight)) +
                  linetype = "dotted")
 ```
 
-Some shapes have both a fill and color aesthetic: 
+Contoh:
+
+```{r}
+ggplot(data = lizards, aes(x = total_length, y = weight)) +
+  geom_point(color = "blue", size = 2, shape = 16)
+```
+
+Contoh:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
@@ -260,31 +377,40 @@ ggplot(data = lizards, aes(x = total_length, y = weight)) +
              alpha = 0.4)
 ```
 
-### Updating an aesthetic based on a variable? YES `aes()`!
+### Mengupdate Estetika Berdasarkan Variabel dengan `aes()`!
 
-If you want to map a variable onto a graph aesthetic (e.g., point color should be based on *lizard species*), put it within `aes()`. 
+Jika Anda ingin memetakan variabel ke estetika grafik (misalnya, warna titik harus berdasarkan *jenis lizard*), maka masukkan variabel tersebut dalam `aes()`. 
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
   geom_point(aes(color = common_name, size = total_length))
 ```
 
-These can be used in combination. For example, if we want the color to be based on species, but the transparency for all points is 0.3:
+Dalam contoh di atas, kita memetakan variabel *jenis_lizard* ke estetika warna titik menggunakan `aes()`. Ini berarti bahwa warna titik akan berbeda-beda tergantung pada *jenis lizard*.
+
+Dengan menggunakan `aes()`, kita dapat membuat grafik yang lebih informatif dan menarik, karena kita dapat memvisualisasikan hubungan antara variabel-variabel yang berbeda.
+
+### Menggunakan Kombinasi Estetika
+Estetika-estetika ini dapat digunakan dalam kombinasi. Misalnya, jika kita ingin warna titik berdasarkan *jenis lizard*, tetapi transparansi untuk semua titik adalah 0.3:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
   geom_point(aes(color = common_name), alpha = 0.3)
 ```
 
-## Themes
+Dalam contoh di atas, kita memetakan variabel jenis_lizard ke estetika warna titik menggunakan `aes()`, dan kemudian kita menambahkan transparansi 0.3 untuk semua titik menggunakan alpha = 0.3. Ini berarti bahwa semua titik akan memiliki transparansi yang sama, tetapi warna titik akan berbeda-beda tergantung pada *jenis lizard*.
 
-Quick reminder: yeah there are some built-in themes you can add with `+ theme_*()`. 
+Dengan menggunakan kombinasi estetika, kita dapat membuat grafik yang lebih kompleks dan menarik, serta memvisualisasikan hubungan antara variabel-variabel yang berbeda.
 
-A few useful baselines are: 
+## Themes/Tema
 
-- `theme_minimal()`: minimal theme
-- `theme_bw()`: also pretty good for some stuff
-- `theme_light()`: a nice light one
+Ada beberapa tema bawaan yang dapat Anda tambahkan dengan `+ theme_*()`. 
+
+Beberapa tema dasar yang berguna adalah: 
+
+- `theme_minimal()`: tema minimalis
+- `theme_bw()`: cukup baik untuk beberapa hal
+- `theme_light()`: tema yang ringan
 
 ```{r}
 ggplot(data = lizards, aes(x = site, y = weight)) +
@@ -292,30 +418,32 @@ ggplot(data = lizards, aes(x = site, y = weight)) +
   theme_minimal()
 ```
 
-## Axis labels
+Dalam contoh di atas, kita menambahkan tema minimalis ke grafik titik. Anda dapat mengganti `theme_minimal()` dengan tema lainnya untuk melihat perbedaan.
 
-For basic axis labels, I recommend `labs()`:
+## Label Axis
+
+Untuk label axis dasar, saya merekomendasikan menggunakan `labs()`:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
   geom_point() +
-  labs(x = "Total length (mm)",
-       y = "Weight (grams)",
-       title = "Lizard size")
+  labs(x = "Panjang Total (mm)",
+       y = "Berat (grams)",
+       title = "Hubungan Panjang dan Berat Lizard")
 ```
 
-We'll learn a few more advanced label skills later on. 
+Dengan menggunakan `labs()`, Anda dapat membuat grafik yang lebih informatif dan menarik, serta memudahkan Anda untuk memvisualisasikan data Anda.
 
 ## Facetting
 
-Sometimes it's useful to split up information in a graph into separate panels. For example, maybe we want to have a separate graph of total length versus weight for *each lizard species*. That would be really tedious to create them all manually from subsets. Instead, we'll facet by distinct groups within a variable. 
+Kadang-kadang sangat berguna untuk membagi informasi dalam grafik menjadi panel-panel terpisah. Misalnya, mungkin kita ingin memiliki grafik panjang total versus berat untuk *setiap jenis lizard*. Ini akan sangat melelahkan untuk membuatnya secara manual dari subset. Sebaliknya, kita akan membagi grafik berdasarkan kelompok-kelompok yang berbeda dalam sebuah variabel.
+ 
+Kita akan belajar dua cara untuk melakukan ini:
 
-We'll learn two ways to do this:
+- `facet_wrap()`: cara ini memungkinkan kita untuk memberikan satu variabel faceting dan panel-panel akan diatur dalam grid
+- `facet_grid()`: cara ini memungkinkan kita untuk membuat grid berdasarkan variabel faceting baris dan kolom
 
-- `facet_wrap()`: the one where you give it one faceting variable and the panels get wrapped into a grid
-- `facet_grid()`: the one where you make a grid based on row & column faceting variables
-
-For example, let's say we just want each species to have its own panel. Then we can use `facet_wrap()`:
+Contoh, mari kita asumsikan kita hanya ingin setiap jenis kadal memiliki panelnya sendiri. Maka kita dapat menggunakan `facet_wrap()`:
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
@@ -323,7 +451,10 @@ ggplot(data = lizards, aes(x = total_length, y = weight)) +
   facet_wrap(~common_name, ncol = 3, scales = "free")
 ```
 
-But what if we want to make a grid where the panels are split across groups by lizard sex and if it has a broken tail or not? Since we have two variables being used to create our grid, we'll use `facet_grid()`:
+Dalam contoh di atas, kita menggunakan `facet_wrap()` untuk membagi grafik menjadi panel-panel terpisah berdasarkan jenis kadal. `Simbol ~` digunakan untuk menunjukkan bahwa kita ingin membagi grafik berdasarkan variabel `jenis_lizard`.
+
+Tapi bagaimana jika kita ingin membuat grid di mana panel-panelnya dibagi berdasarkan kelompok-kelompok berdasarkan jenis kelamin kadal dan apakah kadal tersebut memiliki ekor yang rusak atau tidak? Karena kita memiliki dua variabel yang digunakan untuk membuat grid, kita akan menggunakan `facet_grid()`:
+
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
@@ -331,9 +462,15 @@ ggplot(data = lizards, aes(x = total_length, y = weight)) +
   facet_grid(sex ~ tail)
 ```
 
-## Getting things in order
+Dalam contoh di atas, kita menggunakan `facet_grid()` untuk membuat grid di mana panel-panelnya dibagi berdasarkan jenis kelamin kadal dan apakah kadal tersebut memiliki ekor yang rusak atau tidak. `Simbol ~` digunakan untuk menunjukkan bahwa kita ingin membagi grafik berdasarkan variabel jenis_kelamin dan `ekor_rusak`.
 
-`ggplot` loves putting things in alphabetical order - but that's rarely the order you actually want things in if you have categorical groups. Let's find some total counts of lizards in the dataset by common name, then make a column graph: 
+Dalam sintaks **`facet_grid()`**, variabel yang berada di sebelah kiri **`(jenis_kelamin)`** akan digunakan untuk membuat baris, sedangkan variabel yang berada di sebelah kanan **`(ekor_rusak)`** akan digunakan untuk membuat kolom.
+
+Dengan menggunakan `facet_grid()`, kita dapat membuat grafik yang lebih kompleks dan menarik, serta memudahkan kita untuk memvisualisasikan data kita.
+
+## Mengatur Urutan
+
+Dalam contoh di bawah, kita menggunakan `count(`) dari paket `dplyr` untuk menghitung total kadal berdasarkan jenis. Kemudian, kita menggunakan `ggplot()` untuk membuat grafik kolom.
 
 ```{r}
 lizard_counts <- lizards %>% 
@@ -344,15 +481,15 @@ ggplot(data = lizard_counts, aes(y = fct_reorder(common_name, n), x = n)) +
 
 ```
 
-## `ggplot` basics: synthesis examples
+## Contoh Penggunaan `ggplot`
 
-**Example 1:** A quick review of basics, including: 
+**Contoh 1:** 
 
-- `ggplot` essentials
+- Dasar-dasar`ggplot` 
 - aesthetic mapping
 - themes
 - `facet_wrap` & `facet_grid`
-- labels with `labs`
+- Label dengan `labs`
 
 ```{r}
 ggplot(data = lizards, aes(x = total_length, y = weight)) +
@@ -366,9 +503,9 @@ ggplot(data = lizards, aes(x = total_length, y = weight)) +
   facet_wrap(~common_name, scales = "free")
 ```
 
-**Example 2:** Reminders of position, `facet_grid`, and factor reordering
+**Contoh 2:**
 
-Let's make a stacked column graph of lizard species by site: 
+Mari kita buat grafik kolom bertumpuk dari spesies kadal berdasarkan lokasi: 
 
 ```{r}
 ggplot(data = lizards, aes(y = fct_infreq(common_name))) +
@@ -377,9 +514,6 @@ ggplot(data = lizards, aes(y = fct_infreq(common_name))) +
   labs(x = "Lizard counts",
        y = "Species (common name)") +
   facet_grid(sex ~ tail)
-
-# That annoying space below zero? Let's keep that in mind...
-
 ```
 
 # Advanced `ggplot2` customization
