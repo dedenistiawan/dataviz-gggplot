@@ -1,20 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Advanced Data Visualization with `ggplot2`
+# VIsualisasi Data Dengan `ggplot2`
 
-## Rice University Workshop (March 2021)
+## Institut Teknologi Statistika dan Bisnis Muhammadiyah Semarang
 
-by Allison Horst
+by Deden Istiawan
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-### Workshop guide
-
-Available here: <https://allisonhorst.github.io/rice-data-viz/>
-
-### Workshop outline
+### Outline
 
 -   Conceptual hierarchy of data viz
 -   `ggplot2` basics review
@@ -38,22 +34,6 @@ Available here: <https://allisonhorst.github.io/rice-data-viz/>
     -   A map! in `ggplot2`
 -   Export & save your graphs
 -   Keep learning
-
-### Workshop prep:
-
-There are two ways you can get the workshop materials:
-
-1.  Create a free [RStudio Cloud](https://rstudio.cloud) account, and
-    access the materials here: <https://rstudio.cloud/project/2256278>.
-    **If you use this option, make sure to click “Make permanent copy”
-    or your work will be deleted when you close the project.**
-
-2.  Fork & clone this repo to work locally.
-
-### Required packages:
-
-Make sure you have recent versions of the following packages installed
-for the workshop:
 
 #### General use packages:
 
